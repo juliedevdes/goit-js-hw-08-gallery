@@ -96,38 +96,34 @@ const createGallery = function (arrayOfImgObj) {
 createGallery(galleryItems);
 
 //2 создаем открытие модального
-function openModalOnImgClick(event) {
+function openModal(event) {
   event.preventDefault();
   if (event.target.nodeName !== 'IMG') {
     return;
   }
   refs.lightBox.classList.add('is-open');
-  // event.target.src = event.target.dataset.source;
   refs.lightboxImg.src = event.target.dataset.source;
-  //console.log(event.target.dataset.source);
   window.addEventListener('keydown', onEscape);
 }
-
-refs.ulGallery.addEventListener('click', openModalOnImgClick);
+refs.ulGallery.addEventListener('click', openModal);
 
 //3 создаем закрытие модального
-function closeBtnOnClick(event) {
+function closeModal(event) {
   refs.lightBox.classList.remove('is-open');
   refs.lightboxImg.src = '';
   window.removeEventListener('keydown', onEscape);
 }
-
-refs.closeBtn.addEventListener('click', closeBtnOnClick);
+refs.closeBtn.addEventListener('click', closeModal);
 
 /* Закрытие модального окна по клику на `div.lightbox__overlay`*/
 function onOverlayClick(event) {
-  refs.lightBox.classList.remove('is-open');
+  closeModal();
 }
 refs.lightBoxOver.addEventListener('click', onOverlayClick);
 
 /* Закрытие модального окна по нажатию клавиши `ESC`*/
 function onEscape(event) {
   if (event.code === 'Escape') {
-    refs.lightBox.classList.remove('is-open');
+    closeModal();
   }
 }
