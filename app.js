@@ -63,8 +63,7 @@ const galleryItems = [
     description: 'Lighthouse Coast Sea',
   },
 ];
-
-//1 Создание и рендер разметки по массиву данных `galleryItems` из `app.js` и предоставленному шаблону.
+//1 создаем рендер
 const ulGallery = document.querySelector(' ul.js-gallery');
 
 const createGallery = function (arrayOfImgObj) {
@@ -89,30 +88,29 @@ const createGallery = function (arrayOfImgObj) {
 };
 createGallery(galleryItems);
 
-//2 Реализация делегирования на галерее `ul.js-gallery` и получение `url` большого изображения.
-
-const onImgCLick = function (event) {
+//2 создаем открытие модального
+function openModalOnImgClick(event) {
   event.preventDefault();
   if (event.target.nodeName !== 'IMG') {
     return;
   }
-  //console.log(event.target.src);
+  document.querySelector('div.lightbox').classList.add('is-open');
+  // event.target.src = event.target.dataset.source;
+  const lightboxImg = document.querySelector('.lightbox__image');
+  lightboxImg.src = event.target.dataset.source;
+  //console.log(event.target.dataset.source);
+}
 
-  event.target.src = event.target.dataset.source;
-  // console.log(event.target.src);
-};
+ulGallery.addEventListener('click', openModalOnImgClick);
 
-ulGallery.addEventListener('click', onImgCLick);
+//3 создаем закрытие модального
+const closeBtn = document.querySelector('button[data-action="close-lightbox');
 
-//3 Открытие модального окна по клику на элементе галереи.
-// function openModalOnImgClick(event) {
-//   document.querySelector('div.lightbox').classList.add('is-open');
-// }
-// ulGallery.addEventListener('click', openModalOnImgClick);
+function closeBtnOnClick(event) {
+  document.querySelector('div.lightbox').classList.remove('is-open');
+  lightboxImg.src = '';
+}
+closeBtn.addEventListener('click', closeBtnOnClick);
 
-//4 Подмена значения атрибута `src` элемента `img.lightbox__image`.
-
-//5 Закрытие модального окна по клику на кнопку `button[data-action="close-lightbox"]`.
-
-//6 Очистка значения атрибута `src` элемента `img.lightbox__image`. Это необходимо для того, чтобы при следующем открытии
-//модального окна, пока грузится изображение, мы не видели предыдущее.
+// - Закрытие модального окна по клику на `div.lightbox__overlay`.
+// - Закрытие модального окна по нажатию клавиши `ESC`.
