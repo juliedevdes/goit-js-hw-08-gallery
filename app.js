@@ -63,3 +63,46 @@ const galleryItems = [
     description: 'Lighthouse Coast Sea',
   },
 ];
+
+/*
+
+- Создание и рендер разметки по массиву данных `galleryItems` из `app.js` и
+  предоставленному шаблону.
+- Реализация делегирования на галерее `ul.js-gallery` и получение `url` большого
+  изображения.
+- Открытие модального окна по клику на элементе галереи.
+- Подмена значения атрибута `src` элемента `img.lightbox__image`.
+- Закрытие модального окна по клику на кнопку
+  `button[data-action="close-lightbox"]`.
+- Очистка значения атрибута `src` элемента `img.lightbox__image`. Это необходимо
+  для того, чтобы при следующем открытии модального окна, пока грузится
+  изображение, мы не видели предыдущее.
+
+*/
+// 1 рендер галереи
+const ulGallery = document.querySelector(' ul.js-gallery');
+console.log(ulGallery);
+
+const createGallery = function (arrayOfImgObj) {
+  const htmlString = arrayOfImgObj
+    .map(
+      ({ preview, original, description }) => `<li class="gallery__item">
+<a
+  class="gallery__link"
+  href=${original}
+>
+  <img
+    class="gallery__image"
+    src=${preview}
+    data-source=${original}
+    alt=${description}
+  />
+</a>
+</li>`
+    )
+    .join('');
+  ulGallery.innerHTML = htmlString;
+};
+createGallery(galleryItems);
+
+//2 сделать чтобы хоть что-то кликалось на изобриажении(делегируем на юл)
