@@ -64,24 +64,8 @@ const galleryItems = [
   },
 ];
 
-/*
-
-- Создание и рендер разметки по массиву данных `galleryItems` из `app.js` и
-  предоставленному шаблону.
-- Реализация делегирования на галерее `ul.js-gallery` и получение `url` большого
-  изображения.
-- Открытие модального окна по клику на элементе галереи.
-- Подмена значения атрибута `src` элемента `img.lightbox__image`.
-- Закрытие модального окна по клику на кнопку
-  `button[data-action="close-lightbox"]`.
-- Очистка значения атрибута `src` элемента `img.lightbox__image`. Это необходимо
-  для того, чтобы при следующем открытии модального окна, пока грузится
-  изображение, мы не видели предыдущее.
-
-*/
-// 1 рендер галереи
+//1 Создание и рендер разметки по массиву данных `galleryItems` из `app.js` и предоставленному шаблону.
 const ulGallery = document.querySelector(' ul.js-gallery');
-console.log(ulGallery);
 
 const createGallery = function (arrayOfImgObj) {
   const htmlString = arrayOfImgObj
@@ -105,4 +89,30 @@ const createGallery = function (arrayOfImgObj) {
 };
 createGallery(galleryItems);
 
-//2 сделать чтобы хоть что-то кликалось на изобриажении(делегируем на юл)
+//2 Реализация делегирования на галерее `ul.js-gallery` и получение `url` большого изображения.
+
+const onImgCLick = function (event) {
+  event.preventDefault();
+  if (event.target.nodeName !== 'IMG') {
+    return;
+  }
+  //console.log(event.target.src);
+
+  event.target.src = event.target.dataset.source;
+  // console.log(event.target.src);
+};
+
+ulGallery.addEventListener('click', onImgCLick);
+
+//3 Открытие модального окна по клику на элементе галереи.
+// function openModalOnImgClick(event) {
+//   document.querySelector('div.lightbox').classList.add('is-open');
+// }
+// ulGallery.addEventListener('click', openModalOnImgClick);
+
+//4 Подмена значения атрибута `src` элемента `img.lightbox__image`.
+
+//5 Закрытие модального окна по клику на кнопку `button[data-action="close-lightbox"]`.
+
+//6 Очистка значения атрибута `src` элемента `img.lightbox__image`. Это необходимо для того, чтобы при следующем открытии
+//модального окна, пока грузится изображение, мы не видели предыдущее.
