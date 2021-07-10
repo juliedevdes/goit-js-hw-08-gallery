@@ -63,9 +63,16 @@ const galleryItems = [
     description: 'Lighthouse Coast Sea',
   },
 ];
-//1 создаем рендер
-const ulGallery = document.querySelector(' ul.js-gallery');
+//0 references obj
+const refs = {
+  ulGallery: document.querySelector(' ul.js-gallery'),
+  closeBtn: document.querySelector('button[data-action="close-lightbox'),
+  lightBox: document.querySelector('div.lightbox'),
+  lightboxImg: document.querySelector('.lightbox__image'),
+  lightBoxOver: document.querySelector('div.lightbox__overlay'),
+};
 
+//1 создаем рендер
 const createGallery = function (arrayOfImgObj) {
   const htmlString = arrayOfImgObj
     .map(
@@ -84,7 +91,7 @@ const createGallery = function (arrayOfImgObj) {
 </li>`
     )
     .join('');
-  ulGallery.innerHTML = htmlString;
+  refs.ulGallery.innerHTML = htmlString;
 };
 createGallery(galleryItems);
 
@@ -94,23 +101,33 @@ function openModalOnImgClick(event) {
   if (event.target.nodeName !== 'IMG') {
     return;
   }
-  document.querySelector('div.lightbox').classList.add('is-open');
+  refs.lightBox.classList.add('is-open');
   // event.target.src = event.target.dataset.source;
-  const lightboxImg = document.querySelector('.lightbox__image');
-  lightboxImg.src = event.target.dataset.source;
+  refs.lightboxImg.src = event.target.dataset.source;
   //console.log(event.target.dataset.source);
+  window.addEventListener('keydown', onEscape);
 }
 
-ulGallery.addEventListener('click', openModalOnImgClick);
+refs.ulGallery.addEventListener('click', openModalOnImgClick);
 
 //3 создаем закрытие модального
-const closeBtn = document.querySelector('button[data-action="close-lightbox');
-
 function closeBtnOnClick(event) {
-  document.querySelector('div.lightbox').classList.remove('is-open');
-  lightboxImg.src = '';
+  refs.lightBox.classList.remove('is-open');
+  refs.lightboxImg.src = '';
+  window.removeEventListener('keydown', onEscape);
 }
-closeBtn.addEventListener('click', closeBtnOnClick);
 
-// - Закрытие модального окна по клику на `div.lightbox__overlay`.
-// - Закрытие модального окна по нажатию клавиши `ESC`.
+refs.closeBtn.addEventListener('click', closeBtnOnClick);
+
+/* Закрытие модального окна по клику на `div.lightbox__overlay`*/
+function onOverlayClick(event) {
+  refs.lightBox.classList.remove('is-open');
+}
+refs.lightBoxOver.addEventListener('click', onOverlayClick);
+
+/* Закрытие модального окна по нажатию клавиши `ESC`*/
+function onEscape(event) {
+  if (event.code === 'Escape') {
+    refs.lightBox.classList.remove('is-open');
+  }
+}
