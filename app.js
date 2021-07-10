@@ -116,10 +116,7 @@ function closeModal(event) {
 refs.closeBtn.addEventListener('click', closeModal);
 
 /* Закрытие модального окна по клику на `div.lightbox__overlay`*/
-function onOverlayClick(event) {
-  closeModal();
-}
-refs.lightBoxOver.addEventListener('click', onOverlayClick);
+refs.lightBoxOver.addEventListener('click', closeModal);
 
 /* Закрытие модального окна по нажатию клавиши `ESC`*/
 function onEscape(event) {
